@@ -87,6 +87,13 @@ VCHPRE_ DISPMANX_ELEMENT_HANDLE_T VCHPOST_ vc_dispmanx_element_add ( DISPMANX_UP
                                                                      const VC_RECT_T *src_rect, DISPMANX_PROTECTION_T protection, 
                                                                      VC_DISPMANX_ALPHA_T *alpha,
                                                                      DISPMANX_CLAMP_T *clamp, DISPMANX_TRANSFORM_T transform );
+// Query the created update handle, DISPMANX_NO_HANDLE on error
+VCHPRE_ DISPMANX_UPDATE_HANDLE_T VCHPOST_ vc_dispmanx_get_update_handle();
+
+//Query the first created element handle, DISPMANX_NO_HANDLE on error
+VCHPRE_ DISPMANX_ELEMENT_HANDLE_T VCHPOST_ vc_dispmanx_get_element_handle();
+
+
 // Change the source image of a display element
 VCHPRE_ int VCHPOST_ vc_dispmanx_element_change_source( DISPMANX_UPDATE_HANDLE_T update, DISPMANX_ELEMENT_HANDLE_T element,
                                                         DISPMANX_RESOURCE_HANDLE_T src );

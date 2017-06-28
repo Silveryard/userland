@@ -78,6 +78,9 @@ static VCOS_EVENT_T dispmanx_message_available_event;
 static VCOS_EVENT_T dispmanx_notify_available_event;
 static VCOS_THREAD_T dispmanx_notify_task;
 
+static DISPMANX_UPDATE_HANDLE_T dispmanx_update_handle = DISPMANX_NO_HANDLE;
+static DISPMANX_ELEMENT_HANDLE_T dispmanx_element_handle = DISPMANX_NO_HANDLE;
+
 /******************************************************************************
 Static functions.
 ******************************************************************************/
@@ -693,7 +696,13 @@ VCHPRE_ DISPMANX_UPDATE_HANDLE_T VCHPOST_ vc_dispmanx_update_start( int32_t prio
    handle = dispmanx_get_handle(EDispmanUpdateStart,
                                          &priority, sizeof(priority));
 
-   return (DISPMANX_UPDATE_HANDLE_T) handle;
+   DISPMANX_UPDATE_HANDLE_T dispmanx_handle = (DISPMANX_UPDATE_HANDLE_T)handle;
+
+   if (dispmanx_update_handle == DISPMANX_NO_HANDLE) {
+	   dispmanx_update_handle = dispmanx_handle;
+   }
+
+   return dispmanx_handle;
 }
 
 
@@ -751,6 +760,15 @@ VCHPRE_ int VCHPOST_ vc_dispmanx_update_submit_sync( DISPMANX_UPDATE_HANDLE_T up
    return success;
 }
 
+// Query the created update handle, DISPMANX_NO_HANDLE on error
+VCHPRE_ DISPMANX_UPDATE_HANDLE_T VCHPOST_ vc_dispmanx_get_update_handle() {
+	return dispmanx_update_handle;
+}
+
+//Query the first created element handle, DISPMANX_NO_HANDLE on error
+VCHPRE_ DISPMANX_ELEMENT_HANDLE_T VCHPOST_ vc_dispmanx_get_element_handle() {
+	return dispmanx_element_handle;
+}
 
 /***********************************************************
  * Name: vc_dispmanx_element_add
@@ -814,7 +832,13 @@ VCHPRE_ DISPMANX_ELEMENT_HANDLE_T VCHPOST_ vc_dispmanx_element_add ( DISPMANX_UP
 
    uint32_t handle =  dispmanx_get_handle(EDispmanElementAdd,
                                           element_param, sizeof(element_param));
-   return (DISPMANX_ELEMENT_HANDLE_T) handle;
+   DISPMANX_ELEMENT_HANDLE_T dispmanx_handle = (DISPMANX_ELEMENT_HANDLE_T) handle;
+
+   if (dispmanx_element_handle == DISPMANX_NO_HANDLE) {
+	   dispmanx_element_handle = dispmanx_handle;
+   }
+
+   return dispmanx_handle;
 }
 
 /***********************************************************
